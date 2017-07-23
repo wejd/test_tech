@@ -1,0 +1,234 @@
+<% layout('templates/layout') %>
+
+<script type="text/javascript" src="angular_app/app_user_info_dashboard.js"></script>
+
+
+<br>
+<h1>User Informations </h1>
+<br>
+
+<div ng-app="angularTable" ng-controller="UserInfoController">
+
+
+    <!--  All Users -->
+
+    <div class="row-fluid sortable">
+        <div class="box span12">
+            <div class="box-header">
+                <h2><i class="halflings-icon white user"></i><span class="break"></span>{{user_info.name}}</h2>
+
+                <div class="box-icon">
+
+                </div>
+            </div>
+            <div class="box-content">
+
+                <ul class="messagesList">
+
+                    <li>
+                        <span class="from">   <h2><strong> User Informations: </strong>
+
+                            </h2>  </span>
+                        <span class="title">  </span>
+                    </li>
+
+                    <li class="alert alert-error " ng-if="user_log_status.log_status==='Logged Out'">
+                        <h3>
+                        <span class="from"><span class="glyphicons file_export"><i></i></span> Log Status
+
+                        </span>
+                            <span class="title ">Logged Out</span></h3>
+                    </li>
+
+                    <li class="alert alert-success" ng-if="user_log_status.log_status==='Logged In'">
+                        <h3>
+                        <span class="from"><span class="glyphicons file_import"><i></i></span> Log Status
+
+                        </span>
+                            <span class="title ">Logged In</span>
+                        </h3>
+                    </li>
+
+                    <li>
+
+                        <h3>  <span class="from"><span class="glyphicons nameplate"><i></i></span> User Name
+
+                        </span>
+                            <span class="title"> {{user_info.name}} </span></h3>
+
+                    </li>
+                    <li>
+                        <h3>
+                        <span class="from"><span class="glyphicons e-mail"><i></i></span> User Email
+
+                        </span>
+                            <span class="title"> {{user_info.email}} </span></h3>
+                    </li>
+
+                    <li>
+                        <h3>
+                        <span class="from"><span class="glyphicons calendar"><i></i></span> Date Registered
+
+                        </span>
+                            <span class="title"> {{user_info.date_registred| amUtc | amLocal | amDateFormat:'DD/MM/YYYY HH:mm'}} </span></h3>
+                    </li>
+                    <li><h3>
+                        <span class="from"><span class="glyphicons calendar"><i></i></span> Last Login
+
+                        </span>
+                            <span class="title"> {{user_info.last_connection| amUtc | amLocal | amDateFormat:'DD/MM/YYYY HH:mm'}} </span></h3>
+                    </li>
+                    <li><h3>
+                        <span class="from"><span class="glyphicons globe_af"><i></i></span> Locale
+
+                        </span>
+                            <span class="title"> {{user_info.locale}} </span></h3>
+                    </li>
+                    <li><h3>
+                        <span class="from"><span class="glyphicons circle_info"><i></i></span> User Agent
+
+                        </span>
+                            <span class="title"> {{user_info.app_info}} </span></h3>
+                    </li>
+                    <li><h3>
+                        <span class="from"><span class="glyphicons phone"><i></i></span> Phone Number
+
+                        </span>
+                            <span class="title"> {{user_info.phone_number}} </span></h3>
+                    </li>
+
+                    <li><h3>
+                        <span class="from"><span class="glyphicons keys"><i></i></span> Activation Key
+
+                        </span>
+                        <span class="title">  <a class=" btn btn-primary" style="width:150px" ng-click='getUserActivationKeyInfo(user_info)'>
+                                {{user_info.activation_key}}</a></span></h3>
+                    </li>
+
+
+                    <li ng-if="user_info.banned===0"><h3>
+                        <span class="from"><span class="glyphicons ok"><i></i></span> Status
+
+                        </span>
+                            <span class="title">   <a class=" btn btn-success" style="width:150px"
+                                                      ng-click='ban_popup(user_info)'>
+                                    Authorized
+                                    <i class=" halflings-icon white ok"></i>
+                                </a>
+
+                          </span></h3>
+                    </li>
+                    <li ng-if="user_info.banned===1"><h3>
+                        <span class="from"><span class="glyphicons ban"><i></i></span> Status
+
+                        </span>
+                            <span class="title">
+
+                            <a class=" btn btn-danger" style="width:150px" ng-click='authorize_popup(user_info)'>
+                                Banned &nbsp; &nbsp;
+                                <i class=" halflings-icon white ban-circle"></i>
+                            </a> </span></h3>
+                    </li>
+
+
+                </ul>
+
+            </div>
+        </div>
+        <!--/span-->
+    </div>
+    <!--/row-->
+
+    <br>
+    <h1 ng-if="users_by_devices_list.length>0">Current Devices: </h1>
+    <br>
+    <div class="row-fluid" >
+        <div class="box  span6"  ng-repeat="user_by_device in users_by_devices_list">
+            <div class="box-header">
+                <h2><i class="halflings-icon white user"></i><span class="break"></span>{{user_info.name}}</h2>
+
+                <div class="box-icon">
+
+                </div>
+            </div>
+            <div class="box-content">
+
+                <ul class="messagesList">
+
+
+
+                    <li><h3>
+                        <span class="from"><span class="glyphicons iphone"><i></i></span> Device Id
+
+                        </span>
+                            <span class="title"> {{user_by_device.device_id}} </span></h3>
+                    </li>
+
+                    <li><h3>
+                        <span class="from"><span class="glyphicons iphone"><i></i></span> Device Info
+
+                        </span>
+                            <span class="title"> {{user_by_device.device_info}} </span></h3>
+                    </li>
+
+                    <li><h3>
+                        <span class="from"><span class="glyphicons calendar"><i></i></span> Login Time
+
+                        </span>
+                            <span class="title"> {{user_by_device.login_time| amUtc | amLocal | amDateFormat:'DD/MM/YYYY HH:mm'}} </span></h3>
+                    </li>
+
+
+
+
+
+                </ul>
+
+            </div>
+        </div>
+
+
+
+    </div>
+    <!--/row-->
+
+    <!-- End All Users -->
+
+
+    <!-- Bann_popup start -->
+
+    <div class="modal hide fade" id="Banning_PopUp">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3>Banning User</h3>
+        </div>
+        <div class="modal-body">
+            <p>Do you want to ban this user</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">No</a>
+            <a class="btn btn-primary" ng-click="ban_user(user)">Yes</a>
+        </div>
+    </div>
+
+    <!--  Bann_popup end -->
+
+    <!-- Bann_popup start -->
+
+    <div class="modal hide fade" id="Authorize_User_PopUp">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3>User Activation</h3>
+        </div>
+        <div class="modal-body">
+            <p>Do you want to authorize this user</p>
+        </div>
+        <div class="modal-footer">
+            <a href="#" class="btn" data-dismiss="modal">No</a>
+            <a class="btn btn-primary" ng-click="authorize_user(user)">Yes</a>
+        </div>
+    </div>
+
+    <!--  Bann_popup end -->
+
+</div>

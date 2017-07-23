@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <% include header.ejs %>
+</head>
+
+<body>
+<!-- start: Header -->
+<div class="navbar">
+    <div class="navbar-inner">
+        <div class="container-fluid">
+
+            <!-- start: Header Menu -->
+            <div class="nav-no-collapse header-nav">
+
+                <img src="/images/skideev_logo_white.png" width="200" height="80" alt="Skideev Brand"
+                     style="margin: 13px 20px 10px 20px"/>
+                <ul class="nav pull-right">
+
+                    <!-- start: Message Dropdown -->
+
+                    <!-- start: User Dropdown -->
+                    <li class="dropdown">
+                        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="halflings-icon white user"></i><%= contentField %>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="dropdown-menu-title">
+                                <span>Account Settings</span>
+                            </li>
+                            <!--    <li><a href="#"><i class="halflings-icon user"></i> Profile</a></li>  -->
+                            <li><a href="/logout"><i class="halflings-icon off"></i> Logout</a></li>
+                        </ul>
+                    </li>
+                    <!-- end: User Dropdown -->
+                </ul>
+            </div>
+            <!-- end: Header Menu -->
+
+        </div>
+    </div>
+</div>
+<!-- start: Header -->
+
+<div class="container-fluid-full">
+    <div class="row-fluid">
+
+        <!-- start: Main Menu -->
+        <div id="sidebar-left" class="span2">
+            <div class="nav-collapse sidebar-nav">
+                <ul class="nav nav-tabs nav-stacked main-menu">
+                    <li><a href="dashboard"><i class="icon-bar-chart"></i><span class="hidden-tablet"> Dashboard</span></a>
+                    </li>
+                    <li><a href="users_dashboard"><i class="icon-group"></i><span
+                                    class="hidden-tablet"> Users</span></a></li>
+                    <li><a href="activation_keys"><i class="icon-key"></i><span
+                                    class="hidden-tablet"> Activation Keys</span></a></li>
+                    <li><a href="advanced_settings"><i class="icon-cog"></i><span class="hidden-tablet"> Advanced Settings</span></a>
+                    </li>
+                    <li><a href="logout"><i class="icon-signout"></i><span class="hidden-tablet"> Logout</span></a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- end: Main Menu -->
+
+        <noscript>
+            <div class="alert alert-block span10">
+                <h4 class="alert-heading">Warning!</h4>
+
+                <p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a>
+                    enabled to use this site.</p>
+            </div>
+        </noscript>
+
+        <!-- start: Content -->
+        <div id="content" class="span10">
+
+
+            <%- body %>
+        </div>
+
+
+    </div>
+    <!--/.fluid-container-->
+
+    <!-- end: Content -->
+</div>
+<!--/#content.span10-->
+</div><!--/fluid-row-->
+
+<div class="modal hide fade" id="myModal">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">×</button>
+        <h3>Settings</h3>
+    </div>
+    <div class="modal-body">
+        <p>Here settings can be configured...</p>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn" data-dismiss="modal">Close</a>
+        <a href="#" class="btn btn-primary">Save changes</a>
+    </div>
+</div>
+
+
+<div class="clearfix"></div>
+
+<% include footer.ejs %>
+
+</body>
+
+
+</html>

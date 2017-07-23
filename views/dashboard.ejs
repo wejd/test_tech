@@ -1,0 +1,324 @@
+<% layout('templates/layout') %>
+
+<script type="text/javascript" src="angular_app/app_main_dashboard.js"></script>
+
+<br>
+<h1>Dashboard </h1>
+<br>
+
+<div ng-app="angularTable">
+
+
+<div ng-controller="APPController0">
+    <h2 ><b >Hello {{admin_name}}, your last login was on {{admin_login_time |  amUtc | amLocal | amDateFormat:'DD/MM/YYYY HH:mm' }}</b></h2>
+</div>
+
+    </br>
+    </br>
+
+    <!--  New Users Table -->
+    <div class="row-fluid ">
+        <div class="box span12">
+            <div class="box-header">
+                <h2><i class="halflings-icon white user"></i><span class="break"></span>New Users</h2>
+
+                <div class="box-icon">
+
+                </div>
+            </div>
+
+            <div class="box-content" ng-controller="APPController1">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label>Total new users this week: </label>
+                        {{users.length}}
+                    </div>
+                </form>
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label>Search</label>
+                        <input type="text" ng-model="search" class="form-control" placeholder="Search">
+                    </div>
+                </form>
+
+                <table class="table table-bordered table-striped table-condensed">
+                    <thead>
+                    <tr>
+                        <th ng-click="sort('name')">Name
+                            <span class="halflings-icon chevron-down" ng-show="sortKey=='name'"
+                                  ng-class="{'halflings-icon chevron-up':reverse,'halflings-icon chevron-down':!reverse}"></span>
+                        </th>
+                        <th ng-click="sort('email')">E-mail
+                            <span class="halflings-icon chevron-down" ng-show="sortKey=='email'"
+                                  ng-class="{'halflings-icon chevron-up':reverse,'halflings-icon chevron-down':!reverse}"></span>
+                        </th>
+                        <th ng-click="sort('date_registred')">Date registered
+                            <span class="halflings-icon chevron-down" ng-show="sortKey=='date_registred'"
+                                  ng-class="{'halflings-icon chevron-up':reverse,'halflings-icon chevron-down':!reverse}"></span>
+                        </th>
+                        <th ng-click="sort('activation_key')">Activation Key
+                            <span class="halflings-icon chevron-down" ng-show="sortKey=='activation_key'"
+                                  ng-class="{'halflings-icon chevron-up':reverse,'halflings-icon chevron-down':!reverse}"></span>
+                        </th>
+
+                        <th ng-click="sort('user_1')">Users Info
+                        <span class="halflings-icon chevron-down" ng-show="sortKey=='user_1'"
+                              ng-class="{'halflings-icon chevron-up':reverse,'halflings-icon chevron-down':!reverse}"></span>
+                        </th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr dir-paginate="new_user in users|orderBy:sortKey:reverse|filter:search|itemsPerPage:5">
+
+                        <td class="center">{{new_user.name}}</td>
+                        <td class="center">{{new_user.email}}</td>
+                        <td class="center"  >{{new_user.date_registred |  amUtc | amLocal | amDateFormat:'DD/MM/YYYY HH:mm'}}</td>
+                        <td class="center">{{new_user.activation_key}}</td>
+                        <td class="center">
+
+                            <a class="btn btn-success"  ng-click='getUserInfo(new_user)'>
+                                User Info &nbsp; &nbsp;
+                                <i class=" halflings-icon white info-sign"></i>
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+                </table>
+                <div class="pagination pagination-centered">
+                    <dir-pagination-controls
+
+                            max-size="5"
+                            direction-links="true"
+                            boundary-links="true">
+                    </dir-pagination-controls>
+                </div>
+
+            </div>
+        </div>
+        <!--/span-->
+    </div>
+    <!--/row-->
+
+    <!--  Active Users -->
+
+    <div class="row-fluid ">
+        <div class="box greenLight span12">
+            <div class="box-header">
+                <h2><i class="halflings-icon white user"></i><span class="break"></span>Active Users</h2>
+
+                <div class="box-icon">
+
+                </div>
+            </div>
+            <div class="box-content" ng-controller="APPController2"  style="color: #101010">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label>Total active users: </label>
+                        {{users2.length}}
+                    </div>
+                </form>
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label>Search</label>
+                        <input type="text" ng-model="search" class="form-control" placeholder="Search">
+                    </div>
+                </form>
+
+                <table class="table table-bordered table-striped table-condensed">
+                    <thead>
+                    <tr>
+                        <th ng-click="sort('name')">Name
+                            <span class="halflings-icon chevron-down" ng-show="sortKey=='name'"
+                                  ng-class="{'halflings-icon chevron-up':reverse,'halflings-icon chevron-down':!reverse}"></span>
+                        </th>
+                        <th ng-click="sort('email')">E-mail
+                            <span class="halflings-icon chevron-down" ng-show="sortKey=='email'"
+                                  ng-class="{'halflings-icon chevron-up':reverse,'halflings-icon chevron-down':!reverse}"></span>
+                        </th>
+                        <th ng-click="sort('date_registred')">Date registered
+                            <span class="halflings-icon chevron-down" ng-show="sortKey=='date_registred'"
+                                  ng-class="{'halflings-icon chevron-up':reverse,'halflings-icon chevron-down':!reverse}"></span>
+                        </th>
+                        <th ng-click="sort('activation_key')">Activation Key
+                            <span class="halflings-icon chevron-down" ng-show="sortKey=='activation_key'"
+                                  ng-class="{'halflings-icon chevron-up':reverse,'halflings-icon chevron-down':!reverse}"></span>
+                        </th>
+
+                        <th ng-click="sort('user_1')">Users Info
+                        <span class="halflings-icon chevron-down" ng-show="sortKey=='user_1'"
+                              ng-class="{'halflings-icon chevron-up':reverse,'halflings-icon chevron-down':!reverse}"></span>
+                        </th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr dir-paginate="active_user in users2|orderBy:sortKey:reverse|filter:search|itemsPerPage:5"
+                        pagination-id="active_users">
+
+                        <td class="center">{{active_user.name}}</td>
+                        <td class="center">{{active_user.email}}</td>
+                        <td class="center">{{active_user.date_registred | amUtc | amLocal | amDateFormat:'DD/MM/YYYY HH:mm'}}</td>
+                        <td class="center">{{active_user.activation_key}}</td>
+                        <td class="center">
+
+                            <a class="btn btn-success" ng-click='getUserInfo(active_user)'>
+                                User Info &nbsp; &nbsp;
+                                <i class=" halflings-icon white info-sign"></i>
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+                </table>
+                <div class="pagination pagination-centered">
+                    <dir-pagination-controls
+                            pagination-id="active_users"
+                            max-size="5"
+                            direction-links="true"
+                            boundary-links="true">
+                    </dir-pagination-controls>
+                </div>
+            </div>
+        </div>
+        <!--/span-->
+    </div>
+    <!--/row-->
+
+    <!-- End Active Users -->
+
+    <!-- Begin Statistics -->
+    <div class="row-fluid " ng-controller="pieChartCtrl">
+        <div class="box span6">
+            <div class="box-header">
+                <h2><i class="halflings-icon white  tag"></i><span class="break"></span>Generated Keys Usage</h2>
+
+                <div class="box-icon">
+
+                </div>
+            </div>
+            <div class="box-content">
+                <!--    <div id="polar-area" class="chart chart-polar-area" chart-data="data" chart-labels="labels" style="height:400px"></div>  -->
+
+                <nvd3 options="options1" data="data1"></nvd3>
+                <h2><b>Exported Keys: {{chart_exported_keys}} out of {{chart_all_generated_keys}} </b></h2>
+
+            </div>
+        </div>
+        <div class="box span6">
+            <div class="box-header">
+                <h2><i class="halflings-icon white  tag"></i><span class="break"></span>Activation Keys Usage</h2>
+
+                <div class="box-icon">
+
+                </div>
+            </div>
+            <div class="box-content">
+                <!--    <div id="polar-area" class="chart chart-polar-area" chart-data="data" chart-labels="labels" style="height:400px"></div>  -->
+
+                <nvd3 options="options2" data="data2"></nvd3>
+                <h2><b>Used Keys: {{chart_used_keys}} out of {{chart_all_keys}} </b></h2>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row-fluid ">
+        <div class="box red span12">
+            <div class="box-header red ">
+                <h2><i class="halflings-icon white user"></i><span class="break"></span>Banned Users</h2>
+
+                <div class="box-icon">
+
+                </div>
+            </div>
+            <div class="box-content" ng-controller="APPControllerBannedUsers" style="color: #101010">
+
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label>Total banned users: </label>
+                        {{banned_users.length}}
+                    </div>
+                </form>
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label>Search</label>
+                        <input type="text" ng-model="search" class="form-control" placeholder="Search">
+                    </div>
+                </form>
+
+                <table class="table table-bordered table-striped table-condensed" >
+                    <thead>
+                    <tr>
+                        <th ng-click="sort('name')">Name
+                            <span class="halflings-icon chevron-down" ng-show="sortKey=='name'"
+                                  ng-class="{'halflings-icon chevron-up':reverse,'halflings-icon chevron-down':!reverse}"></span>
+                        </th>
+                        <th ng-click="sort('email')">E-mail
+                            <span class="halflings-icon chevron-down" ng-show="sortKey=='email'"
+                                  ng-class="{'halflings-icon chevron-up':reverse,'halflings-icon chevron-down':!reverse}"></span>
+                        </th>
+                        <th ng-click="sort('date_registred')">Date registered
+                            <span class="halflings-icon chevron-down" ng-show="sortKey=='date_registred'"
+                                  ng-class="{'halflings-icon chevron-up':reverse,'halflings-icon chevron-down':!reverse}"></span>
+                        </th>
+                        <th ng-click="sort('activation_key')">Activation Key
+                            <span class="halflings-icon chevron-down" ng-show="sortKey=='activation_key'"
+                                  ng-class="{'halflings-icon chevron-up':reverse,'halflings-icon chevron-down':!reverse}"></span>
+                        </th>
+
+                        <th ng-click="sort('user_1')">Users Info
+                        <span class="halflings-icon chevron-down" ng-show="sortKey=='user_1'"
+                              ng-class="{'halflings-icon chevron-up':reverse,'halflings-icon chevron-down':!reverse}"></span>
+                        </th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    <tr dir-paginate="banned_user in banned_users|orderBy:sortKey:reverse|filter:search|itemsPerPage:5"
+                        pagination-id="active_users">
+
+                        <td class="center">{{banned_user.name}}</td>
+                        <td class="center">{{banned_user.email}}</td>
+                        <td class="center">{{banned_user.date_registred| amUtc | amLocal | amDateFormat:'DD/MM/YYYY HH:mm'}}</td>
+                        <td class="center">{{banned_user.activation_keys}}</td>
+                        <td class="center">
+
+                            <a class="btn btn-success" ng-click='getUserInfo(banned_user)'>
+                                User Info &nbsp; &nbsp;
+                                <i class=" halflings-icon white info-sign"></i>
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+                </table>
+                <div class="pagination pagination-centered">
+                    <dir-pagination-controls
+                            pagination-id="active_users"
+                            max-size="5"
+                            direction-links="true"
+                            boundary-links="true">
+                    </dir-pagination-controls>
+                </div>
+            </div>
+        </div>
+        <!--/span-->
+    </div>
+
+    <div>
+
+    </div>
+
+
+</div>

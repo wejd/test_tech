@@ -1,0 +1,521 @@
+<% layout('templates/layout') %>
+
+<script type="text/javascript" src="angular_app/app_activation_keys_dashboard.js"></script>
+
+<br>
+<h1>Activation Keys </h1>
+<br>
+
+<div ng-app="angularTable" ng-controller="ActivationKeysController">
+
+    <!-- START All Activation Keys table -->
+
+    <div class="row-fluid ">
+        <div class="box span6">
+            <div class="box-header" data-original-title="">
+                <h2><i class="halflings-icon white tags"></i><span class="break"></span>Activation Keys</h2>
+
+                <div class="box-icon">
+
+                </div>
+            </div>
+
+
+            <div class="box-content">
+
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label>Total activation keys: </label>
+                        {{activation_keys_list.length}}
+                    </div>
+                </form>
+
+                <table class="table table-bordered table-striped table-condensed">
+                    <thead>
+                    <tr>
+
+                        <th ng-click="sort('activation_key')">Activation Key
+                        <span class="halflings-icon chevron-down" ng-show="sortKey=='activation_key'"
+                              ng-class="{'halflings-icon chevron-up':reverse,'halflings-icon chevron-down':!reverse}"></span>
+                        </th>
+
+                        <th ng-click="sort('active_users')">Active Users
+                        <span class="halflings-icon chevron-down" ng-show="sortKey=='active_users'"
+                              ng-class="{'halflings-icon chevron-up':reverse,'halflings-icon chevron-down':!reverse}"></span>
+                        </th>
+
+                        <th ng-click="sort('exported')">Export Status
+                        <span class="halflings-icon chevron-down" ng-show="sortKey=='exported'"
+                              ng-class="{'halflings-icon chevron-up':reverse,'halflings-icon chevron-down':!reverse}"></span>
+                        </th>
+
+                        <th>Users Info
+
+                        </th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr dir-paginate="activation_key in activation_keys_list|orderBy:sortKey:reverse|filter:search|itemsPerPage:10"
+                        pagination-id="all_activation_keys">
+
+                        <td class="center">{{activation_key.activation_key}}</td>
+                        <td class="center">{{activation_key.active_users}}</td>
+                        <td class="center">
+                            <a ng-if="activation_key.exported===0">
+                                Not Exported &nbsp;
+                            </a>
+                            <a ng-if="activation_key.exported===1">
+                                Exported &nbsp;
+                            </a>
+                        </td>
+                        <td class="center">
+
+                            <a class="btn btn-success" ng-click='getUsersByActivationKey(activation_key)'>
+                                Info &nbsp;
+                                <i class=" halflings-icon white info-sign"></i>
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+                </table>
+                <div class="pagination pagination-centered">
+                    <dir-pagination-controls
+                            pagination-id="all_activation_keys"
+                            max-size="10"
+                            direction-links="true"
+                            boundary-links="true">
+                    </dir-pagination-controls>
+                </div>
+
+            </div>
+
+
+        </div>
+
+        <!-- END All Activation Keys table -->
+
+        <!-- Start web User by Activation Key  -->
+        <div id="WebUsersByKeyForm" style="visibility: visible" class="box span6">
+            <div class="box-header" data-original-title="">
+                <h2><i class="halflings-icon white tags"></i><span class="break"></span>Web Keys
+                  </h2>
+
+                <div class="box-icon">
+
+                </div>
+            </div>
+            <div class="box-content">
+
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label>Total activation keys: </label>
+                        {{Activation_key_list_for_web_user.length}}
+                    </div>
+                </form>
+
+                <table class="table table-bordered table-striped table-condensed">
+                    <thead>
+                    <tr>
+
+                        <th ng-click="sort('activation_key')">Activation Key
+                        <span class="halflings-icon chevron-down" ng-show="sortKey=='activation_key'"
+                              ng-class="{'halflings-icon chevron-up':reverse,'halflings-icon chevron-down':!reverse}"></span>
+                        </th>
+
+
+
+
+
+                        <th>Users Info
+
+                        </th>
+
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr dir-paginate="activation_key in Activation_key_list_for_web_user|orderBy:sortKey:reverse|filter:search|itemsPerPage:10"
+                        pagination-id="all_activation_keys_web">
+
+                        <td class="center">{{activation_key.activation_key}}</td>
+
+                        <td class="center">
+
+                            <a class="btn btn-success" ng-click='getUsersByActivationKey(activation_key)'>
+                                Info &nbsp;
+                                <i class=" halflings-icon white info-sign"></i>
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+                </table>
+                <div class="pagination pagination-centered">
+                    <dir-pagination-controls
+                            pagination-id="all_activation_keys_web"
+                            max-size="10"
+                            direction-links="true"
+                            boundary-links="true">
+                    </dir-pagination-controls>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- END web Users  Activation table -->
+
+
+    </div>
+<!--  start user by activation key  -->
+    <div class="row-fluid">
+        <div id="UsersByKeyForm" style="visibility: visible" class="box span12">
+            <div class="box-header" data-original-title="">
+                <h2><i class="halflings-icon white tags"></i><span class="break"></span>Users By Activation Key:
+                    {{user_activation_key}}</h2>
+
+                <div class="box-icon">
+
+                </div>
+            </div>
+            <div class="box-content">
+
+
+                <table class="table table-bordered table-striped table-condensed">
+
+                    <thead>
+                    <tr>
+
+                        <th>User Name</th>
+
+                        <th>Date Registered</th>
+
+                    </tr>
+                    </thead>
+                    <tbody ng-repeat="user_by_key in users_by_key_list">
+                    <tr>
+
+                        <td class="">{{user_by_key.email}}</td>
+                        <td class="">{{user_by_key.date_registred| amUtc | amLocal | amDateFormat:'DD/MM/YYYY HH:mm'}}
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+<!--  end user by acttivation key  -->
+    <!-- Start Users By Activation table -->
+    <div class="row-fluid">
+
+        <!-- Start Pie Chart -->
+
+        <div class="box span12" >
+            <div class="box-header">
+                <h2><i class="halflings-icon white  tag"></i><span class="break"></span>Exported Activation Keys Usage
+                </h2>
+
+
+            </div>
+            <div class="box-content">
+                <!--    <div id="polar-area" class="chart chart-polar-area" chart-data="data" chart-labels="labels" style="height:400px"></div>  -->
+
+                <nvd3 options="options" data="data"></nvd3>
+                <h2><b>Exported Keys: {{exported_keys}} out of {{all_keys}} </b></h2>
+
+            </div>
+        </div>
+        <!--  End Pie Chart -->
+
+    </div>
+
+
+    <div class="row-fluid ">
+
+        <!-- Start Generate New Keys Form -->
+
+        <div class="box span6">
+            <div class="box-header" data-original-title="">
+                <h2><i class="halflings-icon white  tags"></i><span class="break"></span>Generate New Keys</h2>
+
+                <div class="box-icon">
+
+                </div>
+            </div>
+            <div class="box-content">
+                <form class="form-horizontal">
+                    <fieldset>
+
+                        <div class="control-group success">
+                            <label class="control-label" for="inputGenerateKeys">Number of keys</label>
+
+                            <div class="controls">
+                                <input type="text" ng-model='keys_number' id="inputGenerateKeys">
+                                <span class="help-inline">keys</span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-primary" ng-click="generateUUID(keys_number)">Generate
+                                keys
+                            </button>
+                            <button class="btn" ng-click="resetUUID()">Reset</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+
+        <!-- END Generate New Keys Form -->
+
+
+        <!-- Start Export Activation Keys Form -->
+        <div class="box span6">
+            <div class="box-header" data-original-title="">
+                <h2><i class="halflings-icon white  tags"></i><span class="break"></span>Export Activation Keys</h2>
+
+                <div class="box-icon">
+
+                </div>
+            </div>
+            <div class="box-content">
+                <form class="form-horizontal">
+                    <fieldset>
+
+                        <div class="control-group success">
+                            <label class="control-label" for="inputExportKeys">Keys number to export</label>
+
+                            <div class="controls">
+
+                                <input type="text" ng-model='export_keys_number' id="inputExportKeys">
+                                <span class="help-inline">keys</span>
+                            </div>
+                        </div>
+
+
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-primary" ng-click="exportUUID(export_keys_number)">
+                                Export Keys
+                            </button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+        <!-- END Export Activation Keys Form -->
+
+
+    </div>
+
+
+    <div class="row-fluid ">
+
+        <!-- Start Generated New Keys TABLE -->
+
+        <div id="GeneratedKeys" style="visibility: visible" class="box span12">
+            <div class="box-header" data-original-title="">
+                <h2><i class="halflings-icon white tags"></i><span class="break"></span>Generated Keys</h2>
+
+                <div class="box-icon">
+
+                </div>
+            </div>
+            <div class="box-content">
+
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label>Total generated keys: </label>
+                        <span ng-if="generated_uuid.length!=null">{{generated_uuid.length}}</span>
+                        <span ng-if="generated_uuid.length==null">0</span>
+                    </div>
+                </form>
+
+                <table class="table table-bordered table-striped table-condensed">
+
+                    <thead>
+                    <tr>
+                        <th>Index</th>
+                        <th>Activation key</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr dir-paginate="uuid in generated_uuid|orderBy:sortKey:reverse|filter:search|itemsPerPage:10"
+                        pagination-id="generated_uuid">
+                        <td class="">{{uuid.index}}</td>
+                        <td class="">{{uuid.id}}</td>
+
+                    </tr>
+
+                    </tbody>
+                </table>
+                <div class="pagination pagination-centered">
+                    <dir-pagination-controls
+                            pagination-id="generated_uuid"
+                            max-size="10"
+                            direction-links="true"
+                            boundary-links="true">
+                    </dir-pagination-controls>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-primary" ng-click="validateUUID(0)">Validate Activation
+                            Keys
+                        </button>
+
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+        <!-- END Generated New Keys TABLE -->
+
+    </div>
+
+    <div class="row-fluid ">
+
+        <!--  Start Last Exported Key Files -->
+        <div id="GeneratedKeys" style="visibility: visible" class="box span12">
+            <div class="box-header" data-original-title="">
+                <h2><i class="halflings-icon white tags"></i><span class="break"></span>Last Exported Key Files</h2>
+
+                <div class="box-icon">
+
+                </div>
+            </div>
+            <div class="box-content">
+
+                <table class="table table-bordered table-striped table-condensed">
+
+                    <thead>
+                    <tr>
+                        <th>Export Date</th>
+                        <th>File Name</th>
+                        <th>Download</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr dir-paginate="exported_file in exported_keys__files_list|orderBy:sortKey:reverse|filter:search|itemsPerPage:10"
+                        pagination-id="exported_keys_files">
+                        <td class="">{{exported_file.export_date| amUtc | amLocal | amDateFormat:'DD/MM/YYYY HH:mm'}}
+                        </td>
+                        <td class="">{{exported_file.exported_filename}}</td>
+                        <td class="center">
+
+                            <a class="btn btn-success" ng-click='downloadExportedFile(exported_file)'>
+                                Download &nbsp;
+                                <i class=" halflings-icon white download-alt"></i>
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+                </table>
+                <div class="pagination pagination-centered">
+                    <dir-pagination-controls
+                            pagination-id="exported_keys_files"
+                            max-size="10"
+                            direction-links="true"
+                            boundary-links="true">
+                    </dir-pagination-controls>
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <!--  End Last Exported Key Files -->
+
+    </div>
+
+
+    <!-- START Maximum UUID CAPACITY REACHED POP UP   (HIDDEN)-->
+
+    <div class="modal hide fade" id="Maximum_Size_UUID_PopUp">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3>Too Much Activation keys</h3>
+        </div>
+        <div class="modal-body">
+            <p>Please enter less than 1000 activation keys</p>
+        </div>
+        <div class="modal-footer">
+            <a data-dismiss="modal" class="btn btn-primary">Close</a>
+        </div>
+    </div>
+
+    <!-- END Maximum UUID CAPACITY REACHED POP UP -->
+
+    <!-- START Maximum UUID CAPACITY REACHED POP UP   (HIDDEN)-->
+
+    <div class="modal hide fade" id="Validate_UUID_PopUp">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3>Validate Activation Keys</h3>
+        </div>
+        <div class="modal-body">
+            <p>Do you really want to store your activation keys in database</p>
+        </div>
+
+        <div class="modal-footer">
+            <a class="btn btn-success" ng-click="validateUUID(1)">Yes</a>
+            <a data-dismiss="modal" class="btn btn-danger">No</a>
+        </div>
+
+    </div>
+
+    <!-- END Maximum UUID CAPACITY REACHED POP UP -->
+
+    <!-- START Maximum None Exported CAPACITY REACHED POP UP   (HIDDEN)-->
+
+    <div class="modal hide fade" id="Maximum_None_Exported_keys_PopUp">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3>No more available Activation keys for export</h3>
+        </div>
+        <div class="modal-body">
+            <p>Please generate more activation keys</p>
+        </div>
+        <div class="modal-footer">
+            <a data-dismiss="modal" class="btn btn-primary">Close</a>
+        </div>
+    </div>
+
+    <!-- END Maximum UUID CAPACITY REACHED POP UP -->
+
+    <!-- START Maximum None Exported CAPACITY REACHED POP UP   (HIDDEN)-->
+
+    <div class="modal hide fade" id="Invalid_Exported_keys_PopUp">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3>Invalid Activation keys for export</h3>
+        </div>
+        <div class="modal-body">
+            <p>Please export more keys</p>
+        </div>
+        <div class="modal-footer">
+            <a data-dismiss="modal" class="btn btn-primary">Close</a>
+        </div>
+    </div>
+
+    <!-- END Maximum UUID CAPACITY REACHED POP UP -->
+
+
+</div>
